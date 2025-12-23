@@ -1,0 +1,415 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+  .confirmation-container {
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 0 15px;
+  }
+
+  .confirmation-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .success-icon {
+    font-size: 80px;
+    color: #2ecc71;
+    margin-bottom: 20px;
+    animation: scaleIn 0.5s ease;
+  }
+
+  .confirmation-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+  }
+
+  .confirmation-subtitle {
+    font-size: 16px;
+    color: #666;
+  }
+
+  .confirmation-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+
+  .card-section {
+    padding: 30px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .card-section:last-child {
+    border-bottom: none;
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .booking-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  .booking-detail:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .detail-label {
+    color: #666;
+    font-size: 15px;
+  }
+
+  .detail-value {
+    font-weight: 600;
+    color: #222;
+    font-size: 16px;
+  }
+
+  .property-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .property-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f0f0f0;
+  }
+
+  .property-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .property-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: #222;
+  }
+
+  .property-details p {
+    margin: 0;
+    color: #999;
+    font-size: 13px;
+  }
+
+  .price-breakdown {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+
+  .price-row.total {
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    padding-top: 12px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: #ff385c;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #ed0a3b;
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: #f0f0f0;
+    color: #222;
+  }
+
+  .btn-secondary:hover {
+    background: #e0e0e0;
+  }
+
+  .info-box {
+    background: #f8f9fa;
+    border-left: 4px solid #667eea;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+  }
+
+  .info-box h5 {
+    margin: 0 0 10px 0;
+    color: #667eea;
+    font-weight: 600;
+  }
+
+  .info-box p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .action-buttons {
+      grid-template-columns: 1fr;
+    }
+
+    .confirmation-card {
+      border-radius: 12px;
+    }
+
+    .card-section {
+      padding: 20px;
+    }
+  }
+
+  /* Dark mode */
+  body.dark-mode .confirmation-card {
+    background: #1e1e1e;
+  }
+
+  body.dark-mode .confirmation-title {
+    color: #fff;
+  }
+
+  body.dark-mode .confirmation-subtitle {
+    color: #aaa;
+  }
+
+  body.dark-mode .section-title {
+    color: #666;
+  }
+
+  body.dark-mode .detail-label {
+    color: #999;
+  }
+
+  body.dark-mode .detail-value {
+    color: #e5e5e5;
+  }
+
+  body.dark-mode .property-details h4 {
+    color: #fff;
+  }
+
+  body.dark-mode .property-details p {
+    color: #888;
+  }
+
+  body.dark-mode .card-section {
+    border-color: #333;
+  }
+
+  body.dark-mode .booking-detail {
+    border-color: #2a2a2a;
+  }
+
+  body.dark-mode .btn-secondary {
+    background: #2a2a2a;
+    color: #e5e5e5;
+  }
+
+  body.dark-mode .btn-secondary:hover {
+    background: #333;
+  }
+
+  body.dark-mode .info-box {
+    background: #1a2a3f;
+    border-left-color: #8fc3f8;
+  }
+
+  body.dark-mode .info-box h5 {
+    color: #8fc3f8;
+  }
+
+  body.dark-mode .info-box p {
+    color: #b0b0b0;
+  }
+</style>
+
+<div class="confirmation-container">
+  <!-- Header -->
+  <div class="confirmation-header">
+    <div class="success-icon">✓</div>
+    <h1 class="confirmation-title">Booking Confirmed!</h1>
+    <p class="confirmation-subtitle">
+      Your reservation has been secured. Check your email for details.
+    </p>
+  </div>
+
+  <!-- Main Confirmation Card -->
+  <div class="confirmation-card">
+    <!-- Property Section -->
+    <div class="card-section">
+      <h3 class="section-title">Booking Details</h3>
+      <div class="property-info">
+        <div class="property-image">
+          <img
+            src="<%= booking.listing.image.url %>"
+            alt="<%= booking.listing.title %>"
+          />
+        </div>
+        <div class="property-details">
+          <h4><%= booking.listing.title %></h4>
+          <p>
+            <i class="fa-solid fa-map-pin"></i> <%= booking.listing.location %>,
+            <%= booking.listing.country %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dates Section -->
+    <div class="card-section">
+      <h3 class="section-title">Your Stay</h3>
+      <div class="booking-detail">
+        <span class="detail-label"
+          ><i class="fa-solid fa-calendar"></i> Check-in</span
+        >
+        <span class="detail-value"
+          ><%= booking.checkInDate.toLocaleDateString("en-IN", { year:
+          "numeric", month: "long", day: "numeric" }) %></span
+        >
+      </div>
+      <div class="booking-detail">
+        <span class="detail-label"
+          ><i class="fa-solid fa-calendar"></i> Check-out</span
+        >
+        <span class="detail-value"
+          ><%= booking.checkOutDate.toLocaleDateString("en-IN", { year:
+          "numeric", month: "long", day: "numeric" }) %></span
+        >
+      </div>
+      <div class="booking-detail">
+        <span class="detail-label"
+          ><i class="fa-solid fa-people-group"></i> Guests</span
+        >
+        <span class="detail-value"
+          ><%= booking.numberOfGuests %> <%= booking.numberOfGuests > 1 ?
+          "guests" : "guest" %></span
+        >
+      </div>
+    </div>
+
+    <!-- Booking Reference -->
+    <div class="card-section">
+      <h3 class="section-title">Reference Information</h3>
+      <div class="booking-detail">
+        <span class="detail-label">Booking ID</span>
+        <span class="detail-value"
+          ><%= booking._id.toString().substring(0, 8).toUpperCase() %></span
+        >
+      </div>
+      <div class="booking-detail">
+        <span class="detail-label">Status</span>
+        <span class="detail-value" style="color: #2ecc71"
+          ><i class="fa-solid fa-check-circle"></i> Confirmed</span
+        >
+      </div>
+      <div class="booking-detail">
+        <span class="detail-label">Booked on</span>
+        <span class="detail-value"
+          ><%= booking.createdAt.toLocaleDateString("en-IN", { year: "numeric",
+          month: "long", day: "numeric" }) %></span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Breakdown -->
+  <div class="price-breakdown">
+    <div class="price-row">
+      <span
+        >₹<%= booking.pricePerNight.toLocaleString("en-IN") %> × <%=
+        booking.numberOfNights %> <%= booking.numberOfNights > 1 ? "nights" :
+        "night" %></span
+      >
+      <span
+        >₹<%= (booking.pricePerNight *
+        booking.numberOfNights).toLocaleString("en-IN") %></span
+      >
+    </div>
+    <div class="price-row total">
+      <span>Total Price</span>
+      <span>₹<%= booking.totalPrice.toLocaleString("en-IN") %></span>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <a href="/my-bookings" class="btn-secondary">
+      <i class="fa-solid fa-list"></i> My Bookings
+    </a>
+    <a href="/listings" class="btn-primary">
+      <i class="fa-solid fa-arrow-right"></i> Continue Browsing
+    </a>
+  </div>
+
+  <!-- Info Box -->
+  <div class="info-box">
+    <h5><i class="fa-solid fa-info-circle"></i> What's Next?</h5>
+    <p>
+      The host will receive your booking request. You'll receive a confirmation
+      email shortly with important details about your stay. Check your email for
+      any messages from the host.
+    </p>
+  </div>
+</div>

@@ -1,0 +1,369 @@
+.listing-hero {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.listing-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.listing-title-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 30px;
+}
+
+.listing-title-overlay h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.info-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.price-tag {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item i {
+  font-size: 1.5rem;
+  margin-right: 15px;
+  color: #667eea;
+  width: 30px;
+}
+
+.owner-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 10px 20px;
+  border-radius: 50px;
+  margin: 15px 0;
+}
+
+.owner-badge i {
+  margin-right: 10px;
+  color: #667eea;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.action-buttons .btn {
+  flex: 1;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.action-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.review-section {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 15px;
+  margin-top: 30px;
+}
+
+.review-form-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.review-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: transform 0.3s;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.review-author {
+  display: flex;
+  align-items: center;
+}
+
+.review-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-right: 15px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-header i {
+  font-size: 2rem;
+  margin-right: 15px;
+  color: #667eea;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.description-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+}
+
+.no-reviews {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+.no-reviews i {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.dark-mode .listing-hero img {
+  filter: brightness(0.75);
+}
+
+.dark-mode .listing-title-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.2));
+}
+
+.dark-mode .info-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  color: #ffffff;
+}
+
+.dark-mode .section-header i {
+  color: #4da3ff;
+}
+
+.dark-mode .text-muted {
+  color: #bbbbbb !important;
+}
+
+.dark-mode .price-tag {
+  color: #4da3ff;
+}
+
+.dark-mode .price-tag small {
+  color: #cccccc;
+}
+
+.dark-mode .review-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  color: #ffffff;
+}
+
+.dark-mode .review-avatar {
+  background-color: #333;
+  color: #ffffff;
+}
+
+.dark-mode .review-form-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+}
+
+.dark-mode textarea.form-control {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border-color: #444;
+}
+
+.dark-mode .alert-info {
+  background-color: #1f2a33;
+  color: #ffffff;
+  border-color: #2c3e50;
+}
+
+.dark-mode .alert-info a {
+  color: #4da3ff;
+}
+
+.dark-mode .no-reviews {
+  color: #cccccc;
+}
+
+.dark-mode .no-reviews i {
+  color: #4da3ff;
+}
+
+.dark-mode .btn-success {
+  background-color: #2ecc71;
+  border-color: #2ecc71;
+  color: #000;
+}
+
+/* =========================
+   DARK MODE – REVIEW SECTION FIXES
+========================= */
+
+/* Section header title (Guest Reviews) */
+.dark-mode .section-header h3 {
+  color: #4da3ff; /* premium blue */
+}
+
+/* Section header icons */
+.dark-mode .section-header i {
+  color: #ffcc00;
+}
+
+/* No reviews yet section */
+.dark-mode .no-reviews {
+  color: #dddddd;
+  text-align: center;
+}
+
+.dark-mode .no-reviews h5 {
+  color: #ffffff;
+}
+
+.dark-mode .no-reviews p {
+  color: #bbbbbb;
+}
+
+.dark-mode .no-reviews i {
+  color: #ffcc00;
+}
+
+/* Review card text */
+.dark-mode .review-card p {
+  color: #e0e0e0;
+}
+
+/* Review author name */
+.dark-mode .review-author h6 {
+  color: #ffffff;
+}
+
+/* Sidebar review count text */
+.dark-mode .info-item strong {
+  color: #ffffff;
+}
+
+/* Small muted text override */
+.dark-mode small,
+.dark-mode .text-muted {
+  color: #bbbbbb !important;
+}
+.dark-mode .section-header h3 span,
+.dark-mode .section-header h3 small {
+  color: #bbbbbb;
+  font-weight: 400;
+}
+
+/* FORCE Guest Reviews heading color in dark mode */
+body.dark-mode .review-section .section-header h3 {
+  color: #4da3ff !important;
+}
+
+/* DARK MODE – Owner badge (Hosted by) */
+body.dark-mode .owner-badge {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
+
+body.dark-mode .owner-badge span,
+body.dark-mode .owner-badge strong {
+  color: #ffffff;
+}
+
+body.dark-mode .owner-badge i {
+  color: #4da3ff; /* accent blue */
+}
+
+/* ===============================
+   No Reviews – Dark Mode Fix
+   =============================== */
+
+body.dark-mode .no-reviews {
+  background-color: #1e1e1e;
+  color: #e5e5e5;
+  border-radius: 14px;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+body.dark-mode .no-reviews h5 {
+  color: #ffffff;
+}
+
+body.dark-mode .no-reviews p {
+  color: #a1a1a1;
+}
+
+body.dark-mode .no-reviews i {
+  color: #ff385c;
+}
+body.dark-mode .no-reviews {
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.05);
+}

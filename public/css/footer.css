@@ -1,0 +1,18 @@
+.f-info {
+  background: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+}
+
+.f-info-socials i {
+  font-size: 1.4rem;
+  margin: 0 8px;
+  cursor: pointer;
+  color: #2c3e50;
+}
+
+.f-info-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #3498db;
+}

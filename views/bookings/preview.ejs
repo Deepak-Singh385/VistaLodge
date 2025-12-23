@@ -1,0 +1,111 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="booking-container">
+  <div class="booking-hero">
+    <!-- Listing Image -->
+    <div class="booking-image">
+      <img src="<%= listing.image.url %>" alt="<%= listing.title %>" />
+    </div>
+
+    <!-- Booking Form -->
+    <form
+      action="/listings/<%= listing._id %>/book"
+      method="POST"
+      class="booking-form-card needs-validation"
+      novalidate
+    >
+      <h2 class="form-title">Reserve <%= listing.title %></h2>
+      <p class="form-subtitle">
+        ₹<%= listing.price.toLocaleString("en-IN") %> per night
+      </p>
+
+      <!-- Date Inputs -->
+      <div class="form-group">
+        <label for="checkInDate">Check-in Date</label>
+        <input
+          type="date"
+          id="checkInDate"
+          name="booking[checkInDate]"
+          required
+          min="<%= new Date().toISOString().split('T')[0] %>"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="checkOutDate">Check-out Date</label>
+        <input
+          type="date"
+          id="checkOutDate"
+          name="booking[checkOutDate]"
+          required
+          min="<%= new Date().toISOString().split('T')[0] %>"
+        />
+      </div>
+
+      <!-- Nights Info -->
+      <div class="nights-info" id="nightsInfo"></div>
+
+      <!-- Guest Counter -->
+      <div class="form-group">
+        <label>Number of Guests</label>
+        <div class="guest-counter">
+          <button type="button" class="counter-btn" onclick="decreaseGuests()">
+            −
+          </button>
+          <div class="counter-value" id="guestCount">1</div>
+          <button type="button" class="counter-btn" onclick="increaseGuests()">
+            +
+          </button>
+        </div>
+        <input
+          type="hidden"
+          id="numberOfGuests"
+          name="booking[numberOfGuests]"
+          value="1"
+        />
+      </div>
+
+      <!-- Special Requests -->
+      <div class="form-group">
+        <label for="specialRequests">Special Requests (Optional)</label>
+        <textarea
+          id="specialRequests"
+          name="booking[specialRequests]"
+          rows="3"
+          placeholder="Let the host know about any special needs or preferences..."
+          style="resize: vertical"
+        ></textarea>
+      </div>
+
+      <!-- Price Summary -->
+      <div class="price-summary">
+        <div class="price-row">
+          <span id="nightsLabel">Nights:</span>
+          <span id="nightsValue">0</span>
+        </div>
+        <div class="price-row">
+          <span
+            >₹<%= listing.price.toLocaleString("en-IN") %> ×
+            <span id="priceNights">0</span> nights</span
+          >
+          <span id="subtotal">₹0</span>
+        </div>
+        <div class="price-row total">
+          <span>Total</span>
+          <span id="totalPrice">₹0</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn">
+        <i class="fa-solid fa-lock"></i> Complete Booking
+      </button>
+    </form>
+  </div>
+</div>
+<script>
+  window.LISTING_DATA = {
+    pricePerNight: <%= listing.price %>
+  };
+</script>
+<script src="/js/form.js"></script>

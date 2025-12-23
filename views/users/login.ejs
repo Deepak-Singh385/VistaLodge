@@ -1,0 +1,77 @@
+<% layout("/layouts/boilerplate") %>
+
+<div
+  class="container min-vh-100 d-flex align-items-center justify-content-center"
+>
+  <div class="login-card">
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <i class="fa-solid fa-mountain-sun login-icon"></i>
+      <h3 class="mt-2">
+        Login to
+        <span class="brand-text"
+          >Vista<span class="brand-accent">Lodge</span></span
+        >
+      </h3>
+      <p class="text-muted">Welcome back! Please login to continue</p>
+    </div>
+
+    <!-- Form -->
+    <form action="/login" method="POST" class="needs-validation" novalidate>
+      <!-- Username -->
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="fa-solid fa-user"></i>
+          </span>
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            placeholder="Enter your username"
+            required
+          />
+          <div class="invalid-feedback">Username is required</div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="fa-solid fa-lock"></i>
+          </span>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            class="form-control"
+            placeholder="Enter your password"
+            required
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="togglePassword"
+          >
+            <i class="fa-solid fa-eye"></i>
+          </button>
+          <div class="invalid-feedback">Password is required</div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button class="btn btn-primary w-100 mt-3">Login</button>
+
+      <!-- Footer -->
+      <p class="text-center mt-3 mb-0">
+        Don’t have an account?
+        <a href="/signup" class="signup-link">Create one</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<script src="/js/hidepassword.js"></script>

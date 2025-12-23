@@ -1,0 +1,98 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<h3>Create New List</h3>
+<div class="row">
+  <div class="col-8 offset-2">
+    <form
+      method="POST"
+      action="/listings"
+      novalidate
+      class="needs-validation"
+      enctype="multipart/form-data"
+    >
+      <div class="mb-3">
+        <label for="title" class="form-label">Title:</label>
+        <input
+          name="listing[title]"
+          type="text"
+          class="form-control"
+          required
+        />
+        <div class="valid-feedback">Title Looks Good!</div>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description:</label>
+        <textarea
+          name="listing[description]"
+          class="form-control"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Required*</div>
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Upload Image</label>
+        <input
+          name="listing[image]"
+          type="file"
+          class="form-control"
+          required
+        />
+        <small class="text-muted">
+          <i class="fa-solid fa-circle-info"></i>
+          Maximum file size: 10MB. Supported formats: JPG, PNG, JPEG
+        </small>
+        <div class="invalid-feedback">Required*</div>
+        <div class="invalid-feedback">Required*</div>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-4">
+          <label for="price" class="form-label">Price:</label>
+          <input
+            name="listing[price]"
+            type="number"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Required*</div>
+        </div>
+        <div class="mb-3 col-4">
+          <label for="location" class="form-label">Location:</label>
+          <input
+            name="listing[location]"
+            type="text"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Required*</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="country" class="form-label">Country:</label>
+        <input
+          name="listing[country]"
+          class="form-control"
+          type="text"
+          required
+        />
+        <div class="invalid-feedback">Required*</div>
+      </div>
+      <br /><br />
+      <button class="btn btn-dark btn-add">Add</button>
+      <br /><br />
+    </form>
+  </div>
+</div>
+<script>
+  document.getElementById("image").addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+
+    if (file && file.size > maxSize) {
+      const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+      alert(
+        `File size is too large! Maximum 10MB allowed.\nYour file: ${fileSizeMB}MB`
+      );
+      this.value = ""; // Clear the file input
+    }
+  });
+</script>

@@ -1,0 +1,76 @@
+<style>
+  .nav-link.custom-link i {
+    color: #ff385c; /* Airbnb style accent */
+  }
+</style>
+<nav class="navbar navbar-expand-md custom-navbar sticky-top">
+  <div class="container-fluid px-4">
+    <!-- Brand -->
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/listings">
+      <img src="/images/vl2-logo.png" alt="VistaLodge" class="navbar-logo" />
+      <span class="brand-text">
+        Vista<span class="brand-accent">Lodge</span>
+      </span>
+    </a>
+
+    <!-- Toggler -->
+    <button
+      class="navbar-toggler custom-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Menu -->
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <!-- Left links -->
+      <div class="navbar-nav gap-2">
+        <a class="nav-link custom-link" href="/listings"><b>Explore</b></a>
+      </div>
+      <!-- Search Bar -->
+      <form
+        action="/listings/search"
+        method="GET"
+        class="airbnb-search mx-md-auto my-2 my-md-0"
+      >
+        <div class="search-field">
+          <input type="text" name="city" placeholder="Search city" required />
+        </div>
+
+        <button type="submit" class="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+
+      <!-- Right links -->
+      <div class="navbar-nav ms-auto gap-2 align-items-center">
+        <a class="nav-link custom-link" href="/listings/new">
+          VistaLodge your home
+        </a>
+
+        <% if (!currentUser) { %>
+        <a class="nav-link btn-outline" href="/signup">Signup</a>
+        <a class="nav-link btn-fill" href="/login">Login</a>
+        <% } %> <% if (currentUser) { %>
+        <!-- My Bookings -->
+        <a class="nav-link custom-link" href="/my-bookings">
+          <i class="fa-solid fa-suitcase-rolling me-1"></i>
+          My Bookings
+        </a>
+
+        <a class="nav-link btn-logout" href="/logout">Logout</a>
+        <% } %>
+
+        <button
+          class="btn btn-sm btn-outline-secondary ms-2"
+          id="themeToggle"
+          title="Toggle dark mode"
+        >
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

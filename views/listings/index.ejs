@@ -1,0 +1,40 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<div id="filters">
+  <div class="filter"></div>
+</div>
+<div class="row g-4">
+  <%for(let list of allList){%>
+  <div class="col-lg-3 col-md-4 col-sm-6">
+    <a href="/listings/<%= list._id %>" class="listing-link">
+      <div class="home-card">
+        <div class="home-img-wrapper">
+          <img src="<%= list.image.url %>" alt="<%= list.title %>" />
+          <span class="price-badge">
+            ₹ <%= list.price.toLocaleString("en-IN") %>
+          </span>
+          <button class="wishlist-btn">
+            <i class="fa-regular fa-heart"></i>
+          </button>
+        </div>
+
+        <div class="home-card-body">
+          <h6 class="home-title"><%= list.title %></h6>
+          <p class="home-price">
+            ₹ <%= list.price.toLocaleString("en-IN") %>
+            <span>/ night</span>
+          </p>
+        </div>
+      </div>
+    </a>
+  </div>
+  <%}%>
+</div>
+<script>
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".wishlist-btn")) {
+      const icon = e.target.closest(".wishlist-btn").querySelector("i");
+      icon.classList.toggle("fa-regular");
+      icon.classList.toggle("fa-solid");
+    }
+  });
+</script>
