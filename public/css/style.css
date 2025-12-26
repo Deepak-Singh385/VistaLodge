@@ -800,3 +800,7 @@ body.dark-mode .brand-text {
 body.dark-mode .brand-accent {
   color: #ff6b85;
 }
+
+.navbar-space {
+  height: 2rem;
+}

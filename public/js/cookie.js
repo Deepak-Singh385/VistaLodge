@@ -1,14 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const cookieBox = document.getElementById("cookieConsent");
+  const cookieBanner = document.getElementById("cookieConsent");
+  const acceptBtn = document.getElementById("acceptCookies");
   const rejectBtn = document.getElementById("rejectCookies");
 
-  // Show popup only if no decision yet
-  if (!localStorage.getItem("cookiesDecision")) {
-    cookieBox.classList.remove("d-none");
+  // If already accepted → hide banner
+  if (localStorage.getItem("cookieConsent") === "accepted") {
+    cookieBanner.style.display = "none";
   }
 
-  rejectBtn.addEventListener("click", () => {
-    localStorage.setItem("cookiesDecision", "rejected");
-    cookieBox.classList.add("d-none");
+  // Accept cookies
+  acceptBtn?.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "accepted");
+    cookieBanner.style.display = "none";
+  });
+
+  // Reject cookies (still hide, but mark rejected)
+  rejectBtn?.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "rejected");
+    cookieBanner.style.display = "none";
   });
 });

@@ -35,29 +35,34 @@
           <div class="invalid-feedback">Username is required</div>
         </div>
       </div>
-
       <!-- Password -->
       <div class="mb-3">
         <label class="form-label">Password</label>
-        <div class="input-group">
-          <span class="input-group-text">
+
+        <div class="position-relative">
+          <span
+            class="input-group-text position-absolute start-0 top-50 translate-middle-y"
+          >
             <i class="fa-solid fa-lock"></i>
           </span>
+
           <input
             type="password"
             name="password"
             id="password"
-            class="form-control"
-            placeholder="Enter your password"
+            class="form-control ps-5 pe-5"
+            placeholder="Create a password"
             required
           />
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
+
+          <span
+            class="position-absolute end-0 top-50 translate-middle-y pe-3 toggle-password"
             id="togglePassword"
+            style="cursor: pointer"
           >
             <i class="fa-solid fa-eye"></i>
-          </button>
+          </span>
+
           <div class="invalid-feedback">Password is required</div>
         </div>
       </div>

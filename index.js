@@ -29,9 +29,6 @@ main()
 async function main() {
   await mongoose.connect(dbUrl);
 }
-// async function main() {
-//   await mongoose.connect("mongodb://127.0.0.1:27017/vistaLodge");
-// }
 
 const port = 8000;
 app.engine("ejs", ejsMate);
@@ -41,6 +38,7 @@ app.set("views", path.join(__dirname, "/views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "/public")));
 
+//It is use for Mongo Atlas Service
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   crypto: {
@@ -123,16 +121,10 @@ app.use("/", userRouter);
 
 //Booking
 app.use("/", bookingRouter);
-//Error Handling
 
-app.use((req, res, next) => {
-  next(new ExpressError(404, "Page not found!"));
-});
-
-app.use((err, req, res, next) => {
-  let { status = 500, message = "Something went Wrong" } = err;
-  res.render("error.ejs", { err });
-  // res.status(status).send(message);
+//Root Route
+app.get("/", (req, res) => {
+  res.redirect("/listings");
 });
 
 // Multer error handling (add before your other error handlers)
@@ -144,6 +136,17 @@ app.use((err, req, res, next) => {
     }
   }
   next(err);
+});
+
+//Error Handling
+app.use((req, res, next) => {
+  next(new ExpressError(404, "Page not found!"));
+});
+
+app.use((err, req, res, next) => {
+  let { status = 500, message = "Something went Wrong" } = err;
+  res.render("error.ejs", { err });
+  // res.status(status).send(message);
 });
 
 app.listen(port, (req, res) => {

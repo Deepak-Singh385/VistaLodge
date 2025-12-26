@@ -115,7 +115,7 @@ module.exports.myBookings = async (req, res) => {
       .populate("listing")
       .sort({ createdAt: -1 });
 
-    res.render("bookings/myBookings.ejs", { bookings });
+    res.render("bookings/myBookings", { bookings });
   } catch (err) {
     console.log(err);
     req.flash("error", "Failed to load bookings");
