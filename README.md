@@ -26,3 +26,17 @@ Cloudinary (Image Hosting)
 Render (Deployment) 
 
 ## Website Link : https://vistalodge.onrender.com
+## Screenshots
+1-HomePage:
+<img width="2213" height="1152" alt="Home_Page" src="https://github.com/user-attachments/assets/017391d2-bdcb-4187-a83b-0056e5bb9f07" />
+
+2-Owner-Dashboard:
+<img width="2159" height="1049" alt="Dashboard" src="https://github.com/user-attachments/assets/0ede8b8a-41d0-4e85-9670-f04b04d858e7" />
+
+3-Booking-Page:
+<img width="600" height="1033" alt="Booking_page" src="https://github.com/user-attachments/assets/b07bd535-c248-48dd-a464-54e378ca33eb" />
+
+4-Listing-Page:
+<img width="2217" height="1132" alt="Listing_page" src="https://github.com/user-attachments/assets/c1eec234-1cb5-4280-a63c-54718a71613b" />
+
+
