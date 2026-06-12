@@ -11,13 +11,13 @@ const listingsRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/users.js");
 const bookingRouter = require("./routes/booking.js");
+const dashboardRouter = require("./routes/dashboard.js");
 const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
-
 const dbUrl = process.env.ATLASDB_URL;
 main()
   .then(() => {
@@ -60,7 +60,7 @@ app.use(
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     },
-  })
+  }),
 );
 app.use(flash());
 
@@ -121,6 +121,9 @@ app.use("/", userRouter);
 
 //Booking
 app.use("/", bookingRouter);
+
+//Dashboard Route
+app.use("/dashboard", dashboardRouter);
 
 //Root Route
 app.get("/", (req, res) => {

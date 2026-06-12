@@ -54,6 +54,13 @@
         <a class="nav-link btn-outline" href="/signup">Signup</a>
         <a class="nav-link btn-fill" href="/login">Login</a>
         <% } %> <% if (currentUser) { %>
+
+            <% if (currentUser.email === "deepak2006@gmail.com") { %>
+    <a class="nav-link custom-link" href="/dashboard">
+      <i class="fa-solid fa-chart-line me-1"></i>
+      Dashboard
+    </a>
+  <% } %>
         <!-- My Bookings -->
         <a class="nav-link custom-link" href="/my-bookings">
           <i class="fa-solid fa-suitcase-rolling me-1"></i>

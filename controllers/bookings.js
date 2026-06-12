@@ -56,7 +56,7 @@ module.exports.createBooking = async (req, res) => {
     if (existingBooking) {
       req.flash(
         "error",
-        "Selected dates are not available. Please choose different dates."
+        "Selected dates are not available. Please choose different dates.",
       );
       return res.redirect(`/listings/${id}/book`);
     }

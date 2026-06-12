@@ -53,3 +53,14 @@ module.exports.isBookingUser = async (req, res, next) => {
   }
   next();
 };
+
+module.exports.isDashboardOwner = (req, res, next) => {
+  const OWNER_EMAIL = "deepak2006@gmail.com";
+
+  if (req.user && req.user.email === OWNER_EMAIL) {
+    return next();
+  }
+
+  req.flash("error", "Access Denied!");
+  res.redirect("/listings");
+};

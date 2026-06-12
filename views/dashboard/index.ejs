@@ -1,0 +1,72 @@
+<% layout("/layouts/boilerplate") %>
+<div class="dashboard-wrapper">
+
+  <div class="dashboard-header">
+    <h1>Welcome back, <%= user.username%> 👋</h1>
+    <p>Manage your VistaLodge properties</p>
+  </div>
+
+  <div class="stats-container">
+
+    <div class="stat-card">
+       <i class="fa-solid fa-hotel stat-icon"></i>
+      <h4>Total Listings</h4>
+      <h2><%= totalListings %></h2>
+    </div>
+
+    <div class="stat-card">
+       <i class="fa-solid fa-calendar-check stat-icon"></i>
+      <h4>Total Bookings</h4>
+      <h2><%= totalBookings%></h2>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-star stat-icon"></i>
+      <h4>Total Reviews</h4>
+      <h2><%= totalReviews %></h2>
+    </div>
+
+  </div>
+
+  <div class="quick-actions">
+
+    <a href="/listings/new" class="dashboard-btn">
+      Add Listing
+    </a>
+
+    <a href="/listings" class="dashboard-btn">
+      View Listings
+    </a>
+
+  </div>
+
+  <div class="listing-section">
+
+    <h3>Your Listings</h3>
+
+    <div class="listing-grid">
+
+      <% listings.forEach(listing => { %>
+
+        <div class="listing-card">
+
+          <img
+            src="<%= listing.image.url %>"
+            alt="<%= listing.title %>"
+          >
+
+          <h5><%= listing.title %></h5>
+
+          <p>
+            ₹<%= listing.price.toLocaleString("en-IN") %>
+          </p>
+
+        </div>
+
+      <% }) %>
+
+    </div>
+
+  </div>
+
+</div>
