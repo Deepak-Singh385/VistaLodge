@@ -11,6 +11,7 @@ VistaLodge is a full-stack hotel booking web application that allows users to ex
 📝 Create your own hotel listings (after login)
 🖼️ Image upload using Cloudinary
 ☁️ Deployed on Render
+⭐ Owner Dashboard 
 
 🛠️ Tech Stack:
 Backend
