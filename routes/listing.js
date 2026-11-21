@@ -26,7 +26,9 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     const allowedTypes = new Set(["image/jpeg", "image/png"]);
     if (!allowedTypes.has(file.mimetype)) {
-      return cb(new ExpressError(400, "Only JPG, JPEG, and PNG images are allowed."));
+      return cb(
+        new ExpressError(400, "Only JPG, JPEG, and PNG images are allowed."),
+      );
     }
     cb(null, true);
   },
@@ -58,7 +60,7 @@ router.post(
   isLoggedin,
   upload.single("listing[image]"),
   validateListing,
-  listingController.renderCreate
+  listingController.renderCreate,
 );
 
 //Edit Route
@@ -71,16 +73,10 @@ router.put(
   isOwner,
   upload.single("listing[image]"),
   validateListing,
-  listingController.renderUpdate
+  listingController.renderUpdate,
 );
 
 //Delete Route
 router.delete("/:id", isLoggedin, isOwner, listingController.renderDelete);
-
-//Book now route
-router.get("/:id/book", isLoggedin, async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
-  res.render("bookings/preview", { listing });
-});
 
 module.exports = router;
