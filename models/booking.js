@@ -71,4 +71,6 @@ bookingSchema.pre("save", function (next) {
   next();
 });
 
+bookingSchema.index({ listing: 1, status: 1, checkInDate: 1, checkOutDate: 1 });
+
 module.exports = mongoose.model("Booking", bookingSchema);

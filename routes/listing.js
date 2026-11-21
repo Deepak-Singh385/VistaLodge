@@ -9,7 +9,8 @@ const multer = require("multer");
 const { storage } = require("../cloudconfig.js");
 
 const validateListing = (req, res, next) => {
-  let { error } = listingSchema.validate(req.body);
+  const { _csrf, ...payload } = req.body;
+  let { error } = listingSchema.validate(payload);
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(400, errMsg);
@@ -21,6 +22,13 @@ const upload = multer({
   storage,
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = new Set(["image/jpeg", "image/png"]);
+    if (!allowedTypes.has(file.mimetype)) {
+      return cb(new ExpressError(400, "Only JPG, JPEG, and PNG images are allowed."));
+    }
+    cb(null, true);
   },
 });
 // router
@@ -47,6 +55,7 @@ router.get("/:id", listingController.renderShow);
 //Create Route
 router.post(
   "/",
+  isLoggedin,
   upload.single("listing[image]"),
   validateListing,
   listingController.renderCreate

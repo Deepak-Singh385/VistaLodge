@@ -4,11 +4,12 @@
   <div class="col-8 offset-2">
     <form
       method="POST"
-      action="/listings"
+      action="/listings?_csrf=<%= csrfToken %>"
       novalidate
       class="needs-validation"
       enctype="multipart/form-data"
     >
+      <%- include("../includes/csrf.ejs") %>
       <div class="mb-3">
         <label for="title" class="form-label">Title:</label>
         <input
@@ -32,7 +33,9 @@
         <label for="image" class="form-label">Upload Image</label>
         <input
           name="listing[image]"
+          id="image"
           type="file"
+          accept="image/jpeg,image/png"
           class="form-control"
           required
         />

@@ -65,6 +65,7 @@
             onsubmit="return confirm('Are you sure you want to delete this listing?')"
             style="flex: 1"
           >
+            <%- include("../includes/csrf.ejs") %>
             <button class="btn btn-danger w-100">
               <i class="fa-solid fa-trash"></i> Delete Listing
             </button>
@@ -90,6 +91,7 @@
             novalidate
             class="needs-validation"
           >
+            <%- include("../includes/csrf.ejs") %>
             <div class="mb-4">
               <label for="rating" class="form-label"
                 ><strong>Rating:</strong></label
@@ -185,6 +187,7 @@
                   action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
                   method="POST"
                 >
+                  <%- include("../includes/csrf.ejs") %>
                   <button class="btn btn-sm btn-outline-danger" type="submit">
                     <i class="fa-solid fa-trash"></i>
                   </button>

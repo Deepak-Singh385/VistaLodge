@@ -4,11 +4,12 @@
     <h3>Edit your Listing</h3>
     <form
       method="POST"
-      action="/listings/<%= listing._id %>?_method=PUT"
+      action="/listings/<%= listing._id %>?_method=PUT&_csrf=<%= csrfToken %>"
       novalidate
       class="needs-validation"
       enctype="multipart/form-data"
     >
+      <%- include("../includes/csrf.ejs") %>
       <div class="mb-3">
         <label for="title" class="form-label">Title:</label>
         <input
@@ -42,7 +43,7 @@
       </div>
       <div class="mb-3">
         <label for="image" class="form-label">Image URL:</label>
-        <input name="listing[image]" class="form-control" type="file" />
+        <input id="image" name="listing[image]" class="form-control" type="file" accept="image/jpeg,image/png" />
         <small class="text-muted">
           <i class="fa-solid fa-circle-info"></i>
           Maximum file size: 10MB. Leave empty to keep current image.

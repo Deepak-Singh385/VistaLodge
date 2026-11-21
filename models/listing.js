@@ -15,6 +15,7 @@ const listSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
+    min: 0,
   },
   location: {
     type: String,
@@ -31,6 +32,10 @@ const listSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+  },
+  bookingVersion: {
+    type: Number,
+    default: 0,
   },
 });
 

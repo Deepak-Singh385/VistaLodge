@@ -6,7 +6,8 @@ const { isLoggedin, isBookingUser } = require("../middleware.js");
 const bookingController = require("../controllers/bookings.js");
 
 const validateBooking = (req, res, next) => {
-  let { error } = bookingSchema.validate(req.body);
+  const { _csrf, ...payload } = req.body;
+  let { error } = bookingSchema.validate(payload);
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(", ");
     throw new ExpressError(400, errMsg);

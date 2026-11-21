@@ -1,11 +1,11 @@
 const Joi = require("joi");
 module.exports.listingSchema = Joi.object({
   listing: Joi.object({
-    title: Joi.string().required(),
-    description: Joi.string().required(),
+    title: Joi.string().trim().max(120).required(),
+    description: Joi.string().trim().max(5000).required(),
     price: Joi.number().required().min(0),
-    location: Joi.string().required(),
-    country: Joi.string().required(),
+    location: Joi.string().trim().max(120).required(),
+    country: Joi.string().trim().max(120).required(),
     image: Joi.string().allow("", null),
   }).required(),
 });
@@ -13,7 +13,7 @@ module.exports.listingSchema = Joi.object({
 module.exports.reviewSchema = Joi.object({
   review: Joi.object({
     rating: Joi.number().required().min(1).max(5),
-    comment: Joi.string().required(),
+    comment: Joi.string().trim().max(2000).required(),
   }).required(),
 });
 
@@ -32,6 +32,6 @@ module.exports.bookingSchema = Joi.object({
       "number.min": "At least 1 guest is required",
       "number.max": "Maximum 10 guests allowed",
     }),
-    specialRequests: Joi.string().allow("", null).optional(),
+    specialRequests: Joi.string().trim().max(1000).allow("", null).optional(),
   }).required(),
 });

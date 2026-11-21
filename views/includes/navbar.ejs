@@ -55,7 +55,7 @@
         <a class="nav-link btn-fill" href="/login">Login</a>
         <% } %> <% if (currentUser) { %>
 
-            <% if (currentUser.email === "deepak2006@gmail.com") { %>
+            <% if (isAdmin) { %>
     <a class="nav-link custom-link" href="/dashboard">
       <i class="fa-solid fa-chart-line me-1"></i>
       Dashboard
@@ -67,7 +67,10 @@
           My Bookings
         </a>
 
-        <a class="nav-link btn-logout" href="/logout">Logout</a>
+        <form action="/logout" method="POST" class="d-inline">
+          <%- include("csrf.ejs") %>
+          <button type="submit" class="nav-link btn-logout border-0">Logout</button>
+        </form>
         <% } %>
 
         <button

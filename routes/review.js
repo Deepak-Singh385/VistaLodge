@@ -8,7 +8,8 @@ const { isLoggedin, isReviewAuthor } = require("../middleware.js");
 const reviewController = require("../controllers/reviews.js");
 
 const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
+  const { _csrf, ...payload } = req.body;
+  let { error } = reviewSchema.validate(payload);
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(400, errMsg);

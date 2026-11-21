@@ -21,6 +21,10 @@ module.exports.saveRedirectUrl = (req, res, next) => {
 module.exports.isOwner = async (req, res, next) => {
   let { id } = req.params;
   let listing = await Listing.findById(id);
+  if (!listing) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/listings");
+  }
   if (!listing.owner.equals(res.locals.currentUser._id)) {
     req.flash("error", `You don't have permission to make changes`);
     return res.redirect(`/listings/${id}`);
@@ -31,6 +35,10 @@ module.exports.isOwner = async (req, res, next) => {
 module.exports.isReviewAuthor = async (req, res, next) => {
   let { id, reviewId } = req.params;
   let review = await Review.findById(reviewId);
+  if (!review) {
+    req.flash("error", "Review not found");
+    return res.redirect(`/listings/${id}`);
+  }
   if (!review.author.equals(res.locals.currentUser._id)) {
     req.flash("error", `You don't have permission to make changes`);
     return res.redirect(`/listings/${id}`);
@@ -55,9 +63,7 @@ module.exports.isBookingUser = async (req, res, next) => {
 };
 
 module.exports.isDashboardOwner = (req, res, next) => {
-  const OWNER_EMAIL = "deepak2006@gmail.com";
-
-  if (req.user && req.user.email === OWNER_EMAIL) {
+  if (req.user && (req.user.role === "admin" || req.user.email === process.env.ADMIN_EMAIL)) {
     return next();
   }
 

@@ -1,4 +1,7 @@
 const Listing = require("../models/listing.js");
+const { cloudinary } = require("../cloudconfig.js");
+
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 module.exports.renderIndex = async (req, res) => {
   let allList = await Listing.find();
@@ -6,14 +9,14 @@ module.exports.renderIndex = async (req, res) => {
 };
 
 module.exports.search = async (req, res) => {
-  const { city } = req.query;
+  const city = typeof req.query.city === "string" ? req.query.city.trim().slice(0, 120) : "";
 
   if (!city) {
     return res.redirect("/listings");
   }
 
   const listings = await Listing.find({
-    location: { $regex: city, $options: "i" },
+    location: { $regex: escapeRegex(city), $options: "i" },
   });
 
   res.render("listings/search.ejs", { listings, city });
@@ -42,6 +45,7 @@ module.exports.renderShow = async (req, res) => {
 
 module.exports.renderCreate = async (req, res, next) => {
   try {
+    if (!req.file) throw new Error("An image is required to create a listing.");
     let url = req.file.path;
     let filename = req.file.filename;
     const newListing = new Listing(req.body.listing);
@@ -63,7 +67,7 @@ module.exports.renderEdit = async (req, res) => {
   const listing = await Listing.findById(id);
   if (!listing) {
     req.flash("error", "Listing does not exist");
-    res.redirect("/listings");
+    return res.redirect("/listings");
   }
   let originalUrl = listing.image.url;
   originalUrl = originalUrl.replace("/upload", "/upload/w_300");
@@ -72,12 +76,20 @@ module.exports.renderEdit = async (req, res) => {
 
 module.exports.renderUpdate = async (req, res) => {
   let { id } = req.params;
-  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { runValidators: true });
+  if (!listing) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/listings");
+  }
   if (typeof req.file !== "undefined") {
+    const previousFilename = listing.image?.filename;
     let url = req.file.path;
     let filename = req.file.filename;
     listing.image = { url, filename };
     await listing.save();
+    if (previousFilename && previousFilename !== filename) {
+      await cloudinary.uploader.destroy(previousFilename).catch(console.error);
+    }
   }
 
   req.flash("success", " Listing Updated Successfully.");
@@ -87,7 +99,13 @@ module.exports.renderUpdate = async (req, res) => {
 module.exports.renderDelete = async (req, res) => {
   let { id } = req.params;
   let deleted = await Listing.findByIdAndDelete(id);
+  if (!deleted) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/listings");
+  }
+  if (deleted.image?.filename) {
+    await cloudinary.uploader.destroy(deleted.image.filename).catch(console.error);
+  }
   req.flash("success", "Listing Deleted Successfully.");
-  console.log(deleted);
   return res.redirect("/listings");
 };

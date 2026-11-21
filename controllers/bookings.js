@@ -24,12 +24,6 @@ module.exports.createBooking = async (req, res) => {
     const { checkInDate, checkOutDate, numberOfGuests, specialRequests } =
       req.body.booking;
 
-    const listing = await Listing.findById(id);
-    if (!listing) {
-      req.flash("error", "Listing not found");
-      return res.redirect("/listings");
-    }
-
     // Date validation
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
@@ -46,34 +40,51 @@ module.exports.createBooking = async (req, res) => {
       return res.redirect(`/listings/${id}/book`);
     }
 
-    // Check for existing bookings
-    const existingBooking = await Booking.findOne({
-      listing: id,
-      status: "confirmed",
-      $or: [{ checkInDate: { $lt: checkOut }, checkOutDate: { $gt: checkIn } }],
-    });
+    let savedBooking;
+    // Optimistic locking makes overlapping requests re-check availability before
+    // they can create a reservation for the same listing.
+    for (let attempt = 0; attempt < 3 && !savedBooking; attempt += 1) {
+      const listing = await Listing.findById(id);
+      if (!listing) {
+        req.flash("error", "Listing not found");
+        return res.redirect("/listings");
+      }
 
-    if (existingBooking) {
-      req.flash(
-        "error",
-        "Selected dates are not available. Please choose different dates.",
+      const existingBooking = await Booking.exists({
+        listing: id,
+        status: "confirmed",
+        $or: [{ checkInDate: { $lt: checkOut }, checkOutDate: { $gt: checkIn } }],
+      });
+      if (existingBooking) {
+        req.flash("error", "Selected dates are not available. Please choose different dates.");
+        return res.redirect(`/listings/${id}/book`);
+      }
+
+      const versionFilter = listing.bookingVersion === 0
+        ? { $or: [{ bookingVersion: 0 }, { bookingVersion: { $exists: false } }] }
+        : { bookingVersion: listing.bookingVersion };
+      const lock = await Listing.findOneAndUpdate(
+        { _id: id, ...versionFilter },
+        { $inc: { bookingVersion: 1 } },
       );
-      return res.redirect(`/listings/${id}/book`);
+      if (!lock) continue;
+
+      savedBooking = await new Booking({
+        listing: id,
+        user: req.user._id,
+        checkInDate: checkIn,
+        checkOutDate: checkOut,
+        numberOfGuests,
+        specialRequests,
+        pricePerNight: listing.price,
+        status: "confirmed",
+      }).save();
     }
 
-    // Create booking
-    const newBooking = new Booking({
-      listing: id,
-      user: req.user._id,
-      checkInDate: checkIn,
-      checkOutDate: checkOut,
-      numberOfGuests,
-      specialRequests,
-      pricePerNight: listing.price,
-      status: "confirmed",
-    });
-
-    const savedBooking = await newBooking.save();
+    if (!savedBooking) {
+      req.flash("error", "Availability changed. Please try again.");
+      return res.redirect(`/listings/${id}/book`);
+    }
 
     req.flash("success", "Booking confirmed! Check your bookings for details.");
     res.redirect(`/bookings/${savedBooking._id}/confirmation`);
@@ -165,6 +176,9 @@ module.exports.cancelBooking = async (req, res) => {
 module.exports.getAvailableDates = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const listing = await Listing.exists({ _id: id });
+    if (!listing) return res.status(404).json({ error: "Listing not found" });
 
     const bookedDates = await Booking.find({
       listing: id,

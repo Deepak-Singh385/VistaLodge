@@ -357,6 +357,7 @@
             action="/bookings/<%= booking._id %>/cancel"
             style="flex: 1"
           >
+            <%- include("../includes/csrf.ejs") %>
             <button
               type="submit"
               class="btn-small btn-cancel"

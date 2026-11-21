@@ -18,7 +18,12 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
+const multer = require("multer");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const crypto = require("crypto");
 const dbUrl = process.env.ATLASDB_URL;
+const isProduction = process.env.NODE_ENV === "production";
 main()
   .then(() => {
     console.log("connected to DB");
@@ -30,13 +35,27 @@ async function main() {
   await mongoose.connect(dbUrl);
 }
 
-const port = 8000;
+const port = process.env.PORT || 8000;
 app.engine("ejs", ejsMate);
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
-app.use(express.urlencoded({ extended: true }));
+if (isProduction) app.set("trust proxy", 1);
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://kit.fontawesome.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://ka-f.fontawesome.com"],
+      connectSrc: ["'self'", "https://ka-f.fontawesome.com"],
+    },
+  },
+}));
+app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 300, standardHeaders: true, legacyHeaders: false }));
 
 //It is use for Mongo Atlas Service
 const store = MongoStore.create({
@@ -54,15 +73,39 @@ app.use(
     store,
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
-      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      secure: isProduction,
+      sameSite: "lax",
     },
   }),
 );
 app.use(flash());
+
+const safeMethods = new Set(["GET", "HEAD", "OPTIONS"]);
+app.use((req, res, next) => {
+  if (!req.session.csrfToken) req.session.csrfToken = crypto.randomBytes(32).toString("hex");
+  res.locals.csrfToken = req.session.csrfToken;
+
+  if (safeMethods.has(req.method)) return next();
+  // Multipart bodies are parsed later by Multer, so uploads submit the token
+  // in the query string while ordinary forms submit it in the request body.
+  const submittedToken = req.body?._csrf || req.query?._csrf || req.get("x-csrf-token");
+  const expectedToken = req.session.csrfToken;
+  const valid = typeof submittedToken === "string" &&
+    submittedToken.length === expectedToken.length &&
+    crypto.timingSafeEqual(Buffer.from(submittedToken), Buffer.from(expectedToken));
+
+  if (valid) {
+    // Prevent CSRF metadata from reaching Joi/model validation for normal forms.
+    if (req.body) delete req.body._csrf;
+    return next();
+  }
+  req.flash("error", "Your form expired. Please try again.");
+  return res.status(403).redirect(req.get("referer") || "/listings");
+});
 
 //Authentication of User
 app.use(passport.initialize());
@@ -79,6 +122,7 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user;
+  res.locals.isAdmin = Boolean(req.user && (req.user.role === "admin" || req.user.email === process.env.ADMIN_EMAIL));
   next();
 });
 // Example of adding data
@@ -148,8 +192,8 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   let { status = 500, message = "Something went Wrong" } = err;
-  res.render("error.ejs", { err });
-  // res.status(status).send(message);
+  if (status >= 500) console.error(err);
+  res.status(status).render("error.ejs", { err: { status, message } });
 });
 
 app.listen(port, (req, res) => {
